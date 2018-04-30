@@ -238,6 +238,7 @@ type State = {
   inputIsHidden: boolean,
   isFocused: boolean,
   focusedOption: OptionType | null,
+  focusedValue: OptionType | null,
   menuOptions: MenuOptions,
   selectValue: OptionsType,
 };
@@ -263,6 +264,7 @@ export default class Select extends Component<Props, State> {
   userIsDragging: ?boolean;
   state = {
     focusedOption: null,
+    focusedValue: null,
     inputIsHidden: false,
     isFocused: false,
     menuOptions: { render: [], focusable: [] },
@@ -409,10 +411,66 @@ export default class Select extends Component<Props, State> {
       focusedOption: menuOptions.focusable[openAtIndex],
     });
   }
+  focusValue(direction: 'previous' | 'next') {
+    const { isMulti } = this.props;
+    const { selectValue, focusedValue } = this.state;
+    // If not isMulti return
+    if (!isMulti) return;
+    this.setState({
+      focusedOption: null,
+    });
+    // If there are no currently selected values return;
+    const focusedIndex = focusedValue ? selectValue.indexOf(focusedValue) : -1;
+    let nextFocus = -1;
+    if (!selectValue.length) return;
+    switch(direction) {
+      case 'previous':
+      // ## Direction is previous
+      //  If the currently focused value is the first value in the array return;
+      //  Otherwise, focus the previous value in the selected values array.
+      if (focusedIndex === 0) {
+        nextFocus = 0;
+        break;
+      }
+
+      if (focusedIndex === -1) {
+        nextFocus = selectValue.length - 1;
+        break;
+      }
+
+      nextFocus = focusedIndex - 1;
+      break;
+
+      case 'next':
+      // ## Direction is next
+      //  If there is only one value return;
+      //  If the currently focused value is the last value in the array return;
+      //  Otherwise focus the next value in the array.
+      if (focusedIndex === -1) break;
+      if (focusedIndex === selectValue.length - 1) {
+        /// focus the inpu again
+        break;
+      }
+      nextFocus = focusedIndex + 1;
+      default:
+        break;
+    }
+    console.log(selectValue);
+    console.log(selectValue[nextFocus]);
+    this.setState({
+      focusedValue: selectValue[nextFocus],
+    });
+  };
+
   focusOption(direction: FocusDirection = 'first') {
     const { pageSize } = this.props;
     const { focusedOption, menuOptions } = this.state;
     const options = menuOptions.focusable;
+
+    this.setState({
+      focusedValue: null,
+    });
+
     if (!options.length) return;
     let nextFocus = 0; // handles 'first'
     const focusedIndex = focusedOption ? options.indexOf(focusedOption) : -1;
@@ -467,6 +525,10 @@ export default class Select extends Component<Props, State> {
   removeValue = (removedValue: OptionType) => {
     const { onChange } = this.props;
     const { selectValue } = this.state;
+    this.setState({
+      focusedValue: null,
+    });
+
     onChange(selectValue.filter(i => i !== removedValue), {
       action: 'remove-value',
     });
@@ -759,6 +821,7 @@ export default class Select extends Component<Props, State> {
 
   onKeyDown = (event: SyntheticKeyboardEvent<HTMLElement>) => {
     const {
+      isMulti,
       backspaceRemovesValue,
       escapeClearsValue,
       inputValue,
@@ -769,7 +832,7 @@ export default class Select extends Component<Props, State> {
       tabSelectsValue,
       openMenuOnFocus,
     } = this.props;
-    const { focusedOption, selectValue } = this.state;
+    const { focusedOption, focusedValue, selectValue } = this.state;
 
     if (isDisabled) return;
 
@@ -782,12 +845,24 @@ export default class Select extends Component<Props, State> {
 
     // Block option hover events when the user has just pressed a key
     this.blockOptionHover = true;
-
     switch (event.key) {
+      case 'ArrowLeft':
+        if (!isMulti) return;
+        this.focusValue('previous');
+        break;
+      case 'ArrowRight':
+        if (!isMulti) return;
+        this.focusValue('next');
+        break;
       case 'Backspace':
         if (inputValue || !backspaceRemovesValue) return;
-        this.popValue();
-        break;
+        if (focusedValue) {
+          this.removeValue(focusedValue);
+          break;
+        } else {
+          this.popValue();
+          break;
+        }
       case 'Tab':
         if (
           event.shiftKey ||
@@ -803,6 +878,10 @@ export default class Select extends Component<Props, State> {
         this.selectOption(focusedOption);
         break;
       case 'Enter':
+        if (focusedValue) {
+          this.removeValue(focusedValue);
+          break;
+        }
         if (menuIsOpen) {
           if (!focusedOption) return;
           this.selectOption(focusedOption);
@@ -1042,7 +1121,7 @@ export default class Select extends Component<Props, State> {
     } = this.components;
     const { commonProps } = this;
     const { isDisabled, isMulti, inputValue, placeholder } = this.props;
-    const { selectValue } = this.state;
+    const { selectValue, focusedValue } = this.state;
 
     if (!this.hasValue()) {
       return inputValue ? null : (
@@ -1052,7 +1131,9 @@ export default class Select extends Component<Props, State> {
       );
     }
     if (isMulti) {
-      return selectValue.map(opt => (
+      return selectValue.map(opt => {
+        let isFocused = opt === focusedValue;
+        return (
         <MultiValue
           {...commonProps}
           components={{
@@ -1060,6 +1141,7 @@ export default class Select extends Component<Props, State> {
             Label: MultiValueLabel,
             Remove: MultiValueRemove,
           }}
+          isFocused={isFocused}
           isDisabled={isDisabled}
           key={this.getOptionValue(opt)}
           removeProps={{
@@ -1073,7 +1155,8 @@ export default class Select extends Component<Props, State> {
         >
           {this.formatOptionLabel(opt, 'value')}
         </MultiValue>
-      ));
+      );
+    });
     }
     if (inputValue) return null;
     const singleValue = selectValue[0];
@@ -1396,6 +1479,7 @@ export default class Select extends Component<Props, State> {
             {...commonProps}
             isDisabled={isDisabled}
             maxHeight={maxValueHeight}
+            tabIndex={1}
           >
             {this.renderPlaceholderOrValue()}
             {this.renderInput()}
