@@ -15,7 +15,7 @@
   "dependencies": {
     "classnames": "^2.2.4",
     "prop-types": "^15.5.8",
-    "react-input-autosize": "^2.1.2"
+    "react-input-autosize": "rtrufin/react-input-autosize"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -85,8 +85,7 @@
     "lint": "eslint .",
     "deploy": "cross-env NODE_ENV=production nps publish",
     "start": "webpack-dev-server --progress",
-    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register",
-    "precommit": "lint-staged && yarn run test"
+    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register"
   },
   "files": [
     "dist",
