@@ -1,9 +1,16 @@
 {
-  "ignore": ["node-modules/**", "src/index.umd.js"],
-  "presets": [ "env", "stage-0", "react"],
-  "env": {
-    "test": {
-      "plugins": ["istanbul"],
-    },
-  }
+	"ignore": ["node-modules/**", "src/index.umd.js"],
+	"presets": [
+		[
+			"env",
+			{
+				"modules": false
+			}
+		], "stage-0", "react"
+	],
+	"env": {
+		"test": {
+			"plugins": ["external-helpers"],
+		},
+	}
 }
