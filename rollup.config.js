@@ -19,9 +19,6 @@ const babelOptions = (production) => {
 		presets: [['env', { modules: false }], 'stage-0', 'react'],
 		plugins: ['external-helpers'],
 	};
-	if (production) {
-		result.plugins.push('transform-react-remove-prop-types');
-	};
 	return result;
 };
 
