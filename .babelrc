@@ -7,10 +7,5 @@
 				"modules": false
 			}
 		], "stage-0", "react"
-	],
-	"env": {
-		"test": {
-			"plugins": ["external-helpers"],
-		},
-	}
+	]
 }
