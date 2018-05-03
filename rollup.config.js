@@ -18,6 +18,7 @@ const babelOptions = (production) => {
 		babelrc: false,
 		presets: [['env', { modules: false }], 'stage-0', 'react'],
 		plugins: ['external-helpers'],
+		externalHelpers: true,
 	};
 	return result;
 };
