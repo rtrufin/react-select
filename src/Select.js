@@ -110,7 +110,7 @@ class Select extends React.Component {
 	}
 
 	componentWillMount () {
-		this._instancePrefix = `react-select-${(this.props.instanceId || ++instanceId)}-`;
+		this._instancePrefix = `${(this.props.instanceId || ++instanceId)}`;
 		const valueArray = this.getValueArray(this.props.value);
 
 		if (this.props.required) {
@@ -820,7 +820,7 @@ class Select extends React.Component {
 				return (
 					<ValueComponent
 						disabled={this.props.disabled || value.clearableValue === false}
-						id={`${this._instancePrefix}-value-${i}`}
+						id={`${this._instancePrefix}Value${i}`}
 						instancePrefix={this._instancePrefix}
 						key={`value-${i}-${value[this.props.valueKey]}`}
 						onClick={onClick}
@@ -838,7 +838,7 @@ class Select extends React.Component {
 			return (
 				<ValueComponent
 					disabled={this.props.disabled}
-					id={`${this._instancePrefix}-value-item`}
+					id={`${this._instancePrefix}SelectedValue`}
 					instancePrefix={this._instancePrefix}
 					onClick={onClick}
 					placeholder={this.props.placeholder}
@@ -1104,7 +1104,7 @@ class Select extends React.Component {
 			<div ref={ref => this.menuContainer = ref} className="Select-menu-outer" style={this.props.menuContainerStyle}>
 				<div
 					className="Select-menu"
-					id={`${this._instancePrefix}-list`}
+					id={`${this._instancePrefix}List`}
 					onMouseDown={this.handleMouseDownOnMenu}
 					onScroll={this.handleMenuScroll}
 					ref={ref => this.menu = ref}
@@ -1162,6 +1162,7 @@ class Select extends React.Component {
 		return (
 			<div ref={ref => this.wrapper = ref}
 				 className={className}
+				 id={`${this.props.id || 'select'}Container`}
 				 style={this.props.wrapperStyle}>
 				{this.renderHiddenField(valueArray)}
 				<div ref={ref => this.control = ref}
@@ -1173,7 +1174,7 @@ class Select extends React.Component {
 					onTouchStart={this.handleTouchStart}
 					style={this.props.style}
 				>
-					<span className="Select-multi-value-wrapper" id={`${this._instancePrefix}-value`}>
+					<span className="Select-multi-value-wrapper" id={`${this._instancePrefix}Value`}>
 						{this.renderValue(valueArray, isOpen)}
 						{this.renderInput(valueArray, focusedOptionIndex)}
 					</span>

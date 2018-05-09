@@ -76,7 +76,7 @@ class Option extends React.Component {
 				onTouchStart={this.handleTouchStart}
 				onTouchMove={this.handleTouchMove}
 				onTouchEnd={this.handleTouchEnd}
-				id={`${instancePrefix}-option-${optionIndex}`}
+				id={`${instancePrefix}Option${optionIndex}`}
 				title={option.title}>
 				{this.props.children}
 			</div>

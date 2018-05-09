@@ -18,7 +18,8 @@ import States from './components/States';
 
 ReactDOM.render(
 	<div>
-		<States label="States" searchable />
+		test
+		<States selectWrapperId="selectTest" label="States" searchable />
 		<Multiselect label="Multiselect" />
 		<Virtualized label="Virtualized" />
 		<Contributors label="Contributors (Async)" />

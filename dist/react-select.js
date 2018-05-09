@@ -503,7 +503,7 @@ var Option = function (_React$Component) {
 					onTouchStart: this.handleTouchStart,
 					onTouchMove: this.handleTouchMove,
 					onTouchEnd: this.handleTouchEnd,
-					id: instancePrefix + '-option-' + optionIndex,
+					id: instancePrefix + 'Option' + optionIndex,
 					title: option.title },
 				this.props.children
 			);
@@ -728,7 +728,7 @@ var Select$1 = function (_React$Component) {
 	createClass(Select, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			this._instancePrefix = 'react-select-' + (this.props.instanceId || ++instanceId) + '-';
+			this._instancePrefix = '' + (this.props.instanceId || ++instanceId);
 			var valueArray = this.getValueArray(this.props.value);
 
 			if (this.props.required) {
@@ -1527,7 +1527,7 @@ var Select$1 = function (_React$Component) {
 						ValueComponent,
 						{
 							disabled: _this5.props.disabled || value.clearableValue === false,
-							id: _this5._instancePrefix + '-value-' + i,
+							id: _this5._instancePrefix + 'Value' + i,
 							instancePrefix: _this5._instancePrefix,
 							key: 'value-' + i + '-' + value[_this5.props.valueKey],
 							onClick: onClick,
@@ -1549,7 +1549,7 @@ var Select$1 = function (_React$Component) {
 					ValueComponent,
 					{
 						disabled: this.props.disabled,
-						id: this._instancePrefix + '-value-item',
+						id: this._instancePrefix + 'SelectedValue',
 						instancePrefix: this._instancePrefix,
 						onClick: onClick,
 						placeholder: this.props.placeholder,
@@ -1817,7 +1817,7 @@ var Select$1 = function (_React$Component) {
 					'div',
 					{
 						className: 'Select-menu',
-						id: this._instancePrefix + '-list',
+						id: this._instancePrefix + 'List',
 						onMouseDown: this.handleMouseDownOnMenu,
 						onScroll: this.handleMenuScroll,
 						ref: function ref(_ref4) {
@@ -1877,6 +1877,7 @@ var Select$1 = function (_React$Component) {
 						return _this9.wrapper = _ref7;
 					},
 					className: className,
+					id: (this.props.id || 'select') + 'Container',
 					style: this.props.wrapperStyle },
 				this.renderHiddenField(valueArray),
 				React__default.createElement(
@@ -1894,7 +1895,7 @@ var Select$1 = function (_React$Component) {
 					},
 					React__default.createElement(
 						'span',
-						{ className: 'Select-multi-value-wrapper', id: this._instancePrefix + '-value' },
+						{ className: 'Select-multi-value-wrapper', id: this._instancePrefix + 'Value' },
 						this.renderValue(valueArray, isOpen),
 						this.renderInput(valueArray, focusedOptionIndex)
 					),

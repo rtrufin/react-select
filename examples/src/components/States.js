@@ -56,7 +56,8 @@ var StatesField = createClass({
 			<div className="section">
 				<h3 className="section-heading">{this.props.label} <a href="https://github.com/JedWatson/react-select/tree/master/examples/src/components/States.js">(Source)</a></h3>
 				<Select
-					id="state-select"
+					selectWrapperId={this.props.selectWrapperId}
+					id="stateSelect"
 					ref={(ref) => { this.select = ref; }}
 					onBlurResetsInput={false}
 					onSelectResetsInput={false}
@@ -70,6 +71,7 @@ var StatesField = createClass({
 					onChange={this.updateValue}
 					rtl={this.state.rtl}
 					searchable={this.state.searchable}
+					instanceId="stateSelect"
 				/>
 				<button style={{ marginTop: '15px' }} type="button" onClick={this.focusStateSelect}>Focus Select</button>
 				<button style={{ marginTop: '15px' }} type="button" onClick={this.clearValue}>Clear Value</button>

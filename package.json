@@ -15,7 +15,7 @@
   "dependencies": {
     "classnames": "^2.2.4",
     "prop-types": "^15.5.8",
-    "react-input-autosize": "rtrufin/react-input-autosize"
+    "react-input-autosize": "https://github.com/rtrufin/react-input-autosize"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
